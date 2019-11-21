@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
+    
+
+    <TextView
+        android:id="@+id/localized_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="25dp" />
+
+    <ImageView
+        android:id="@+id/image_url"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/localized_name"
+        android:layout_alignLeft="@+id/localized_name"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="21dp"
+        android:src="@drawable/no_image" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/localized_name"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="23dp"
+        android:layout_toRightOf="@+id/image_url"
+        android:textSize="20dp"
+        android:paddingRight="10dp"/>
+
+    <TextView
+        android:id="@+id/year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_toRightOf="@+id/image_url"
+        android:textSize="20dp"
+        android:paddingRight="10dp"/>
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/year"
+        android:layout_toRightOf="@+id/image_url"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:textSize="20dp"
+        android:textColor="@android:color/holo_blue_bright"
+        android:paddingRight="10dp"/>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/image_url"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+
+</RelativeLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
