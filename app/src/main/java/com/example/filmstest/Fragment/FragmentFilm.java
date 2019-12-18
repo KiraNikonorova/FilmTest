@@ -1,10 +1,10 @@
 package com.example.filmstest.Fragment;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,23 +19,27 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-public class FragmentDrama extends Fragment {
+public class FragmentFilm extends Fragment {
+
 
     private ArrayList<Film> filmList;
 
-    public FragmentDrama(ArrayList<Film> listFilm){
+    public FragmentFilm(ArrayList<Film> listFilm){
         this.filmList = listFilm;
     }
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
 
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_drama, container, false);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_film_genre, container, false);
         FilmAdapter fadapter = new FilmAdapter(filmList);
+        ViewCompat.setNestedScrollingEnabled(recyclerView, false);
+
 
         recyclerView.setAdapter(fadapter);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(layoutManager);
+
 
         fadapter.setListener(new FilmAdapter.Listener() {
             @Override
@@ -47,6 +51,7 @@ public class FragmentDrama extends Fragment {
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
                 fragmentTransaction.add(R.id.frame,fragmentDetail);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
@@ -57,5 +62,7 @@ public class FragmentDrama extends Fragment {
 
         return  recyclerView;
     }
+
+
 
 }

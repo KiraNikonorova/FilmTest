@@ -2,7 +2,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ScrollView01"
+    android:id="@+id/ScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -14,7 +14,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:background="@android:color/white">
     
 
     <TextView
@@ -22,59 +22,74 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="25dp" />
+        android:textSize="20dp"
+        android:typeface="serif"/>
 
-    <ImageView
-        android:id="@+id/image_url"
-        android:layout_width="200dp"
-        android:layout_height="250dp"
+    <com.google.android.material.card.MaterialCardView
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_view_det"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="2dp"
+        android:layout_margin="5dp"
         android:layout_below="@+id/localized_name"
         android:layout_alignLeft="@+id/localized_name"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="21dp"
-        android:src="@drawable/no_image" />
+        android:src="@drawable/no_image">
+
+            <ImageView
+                android:id="@+id/image_url"
+                android:layout_width="170dp"
+                android:layout_height="250dp"
+                android:src="@drawable/no_image"
+                android:scaleType="fitXY" />
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/localized_name"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="23dp"
-        android:layout_toRightOf="@+id/image_url"
-        android:textSize="20dp"
-        android:paddingRight="10dp"/>
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="15dp"
+        android:layout_toRightOf="@+id/card_view_det"
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="24dp"
-        android:layout_toRightOf="@+id/image_url"
-        android:textSize="20dp"
-        android:paddingRight="10dp"/>
+        android:layout_toRightOf="@+id/card_view_det"
+        android:textSize="15dp" />
     <TextView
         android:id="@+id/rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/year"
-        android:layout_toRightOf="@+id/image_url"
-        android:layout_marginStart="20dp"
+        android:layout_toRightOf="@+id/card_view_det"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="24dp"
         android:textSize="20dp"
-        android:textColor="@android:color/holo_blue_bright"
-        android:paddingRight="10dp"/>
+        android:textColor="@android:color/holo_blue_bright" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/image_url"
+        android:layout_below="@+id/card_view_det"
         android:layout_marginTop="24dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp"
+        android:typeface="serif"/>
 
 
 </RelativeLayout>

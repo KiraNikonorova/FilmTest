@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.filmstest.Model.Film;
 import com.example.filmstest.R;
@@ -55,6 +57,6 @@ public class FilmDetail extends Fragment {
         description.setText(filmDetail.getDescription());
 
 
-
     }
+
 }

@@ -1,26 +1,31 @@
 package com.example.filmstest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filmstest.Fragment.FilmDetail;
-import com.example.filmstest.Fragment.FragmentDetective;
-import com.example.filmstest.Fragment.FragmentDrama;
+import com.example.filmstest.Fragment.FragmentFilm;
 import com.example.filmstest.Model.Film;
 
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.filmstest.API.ApiService;
 import com.example.filmstest.Model.FilmAdapter;
 import com.example.filmstest.Model.FilmsList;
 import com.example.filmstest.Network.RetroClient;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -33,11 +38,11 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Film> filmList;
-    private FragmentDetective fragDet;
-    private FragmentDrama fragDr;
+    private FragmentFilm fragmentFilm;
     private FilmDetail fragmentDetail;
     private FragmentTransaction fTrans;
     private RelativeLayout relativeLayout;
+    private int idButton = -1;
 
 
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -74,37 +79,11 @@ public class MainActivity extends AppCompatActivity {
                      *
                      */
                     filmList = response.body().getFilms();
-
-                    //список жанров
                     ArrayList<String> listGenre = CreateListGenre();
+                    CreateButtonGenre(listGenre);
 
 
-
-
-
-                    FilmAdapter fadapter = new FilmAdapter(filmList);
-
-                    //filter
-                    ArrayList<Film> listDetective = new ArrayList<>(filmList);
-                    ArrayList<Film> listDrama = new ArrayList<>(filmList);
-                    listDrama.removeIf(s -> !s.getGenres().contains("драма".toLowerCase()));
-                    listDetective.removeIf(s -> !s.getGenres().contains("детектив".toLowerCase()));
-
-
-                    //фрагменты
-                    fragDet = new FragmentDetective(listDetective) ;
-                    fragDr = new FragmentDrama(listDrama);
-
-
-                    //активность кнопок
-                    Button bt1 = findViewById(R.id.bt1);
-                    Button bt2 = findViewById(R.id.bt2);
-                    bt1.setEnabled(true);
-                    bt2.setEnabled(true);
-
-
-                    //обработка клика
-
+                    //FilmAdapter fadapter = new FilmAdapter(filmList);
 
                 }
             }
@@ -119,58 +98,105 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
     }
 
 
-    public void OnClickButton(View view){
-        Button bt1 = findViewById(R.id.bt1);
-        Button bt2 = findViewById(R.id.bt2);
-        fTrans = fragmentManager.beginTransaction();
-        switch (view.getId()) {
-            case R.id.bt1:
-                fTrans.replace(R.id.frgContainer,fragDr);
-                //bt1.getBackground().setColorFilter(new LightingColorFilter(, 0xFFAA0000));
-                break;
-            case R.id.bt2:
-                fTrans.replace(R.id.frgContainer, fragDet);
-                //bt2.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
-                break;
-            default:
-                break;
-
-        }
-        fTrans.addToBackStack(null);
-        fTrans.commit();
-    }
-
-    private ArrayList<String> CreateListGenre(){
+    private ArrayList<String> CreateListGenre() {
 
         ArrayList<String> union = filmList.get(0).getGenres();
 
-        for(Integer i =1; i<filmList.size();i++) {
+        for (Integer i = 1; i < filmList.size(); i++) {
 
             union = (ArrayList<String>) Stream.concat(filmList.get(i).getGenres().stream(), union.stream())
                     .distinct()
                     .collect(Collectors.toList());
         }
 
-         return union;
+        return union;
     }
 
-//    private void CreateButtonGenre(){
-//
-//        relativeLayout =  findViewById(R.id.rltive);
-//        Button button = new Button(getApplicationContext());
-//        button.setText("комедия");
-//        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
-//                RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                RelativeLayout.LayoutParams.WRAP_CONTENT
-//        );
-//        buttonParams.
-//        relativeLayout.addView(button);
-//
-//    }
+    private void CreateButtonGenre(ArrayList<String> listGenre) {
+
+        RelativeLayout relativeLayout = findViewById(R.id.relative);
+        ArrayList<Button> listButton = new ArrayList<>();
 
 
+        RelativeLayout.LayoutParams buttonParams1 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fTrans = fragmentManager.beginTransaction();
+                ArrayList<Film> listFilmGenre = new ArrayList<>(filmList);
+                String textButtom = ((Button) view).getText().toString();
+
+                if (idButton == -1) {
+                    idButton = view.getId();
+                } else {
+                    Button button = findViewById(idButton);
+                    button.getBackground().clearColorFilter();
+                    idButton = view.getId();
+                }
+
+                //view.setBackground(Drawable.createFromPath("drawable/click.xml"));
+                view.getBackground().setColorFilter(new LightingColorFilter(0x696969, 0x696969));
+                //view.getBackground().clearColorFilter();
+                listFilmGenre.removeIf(s -> !s.getGenres().contains(textButtom.toLowerCase()));
+                fragmentFilm = new FragmentFilm(listFilmGenre);
+                fTrans.replace(R.id.frgContainer,fragmentFilm);
+                fTrans.addToBackStack(null);
+                fTrans.commit();
+
+
+            }
+        };
+
+        for (Integer i = 0; i < listGenre.size(); i++) {
+            //Button button = new Button(this);
+            //MaterialButton button = new MaterialButton( new ContextThemeWrapper( this, R.style.Widget_MaterialComponents_Button_OutlinedButton));
+            MaterialButton button = new MaterialButton(this, null, R.attr.borderlessButtonStyle);
+            button.setText(listGenre.get(i));
+            button.setTextSize(13);
+            button.setId(View.generateViewId());
+            listButton.add(button);
+            button.setOnClickListener(onClickListener);
+            //button.setEnabled(false);
+
+        }
+
+
+        buttonParams1.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        buttonParams1.leftMargin = 5;
+
+        relativeLayout.addView(listButton.get(0), buttonParams1);
+
+        for (Integer i = 1; i < listGenre.size(); i++) {
+
+            RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            buttonParams1.leftMargin = 10;
+
+            if (i % 3 == 0) {
+
+                buttonParams.addRule(RelativeLayout.BELOW, listButton.get(i - 3).getId());
+
+            } else {
+                buttonParams.addRule(RelativeLayout.RIGHT_OF, listButton.get(i - 1).getId());
+                buttonParams.addRule(RelativeLayout.ALIGN_TOP, listButton.get(i - 1).getId());
+            }
+
+            relativeLayout.addView(listButton.get(i), buttonParams);
+        }
+
+
+    }
 
 }
